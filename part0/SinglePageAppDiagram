@@ -1,0 +1,12 @@
+sequenceDiagram
+    autonumber
+    participant browser
+    participant server
+
+    Note right of browser: The button on the form is clicked
+    browser->>server: POST request to /new_note_spa
+    activate server
+    server-->>browser: Status Code: 201 Created
+    deactivate server
+
+    Note right of browser: The browser stays on the same page while server-side json is updated

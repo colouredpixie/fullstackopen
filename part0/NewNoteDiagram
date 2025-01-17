@@ -1,12 +1,20 @@
 sequenceDiagram
+    autonumber
     participant browser
     participant server
+
+    Note right of browser: The button on the form is clicked
+    browser->>server: POST request to /new_note
+    activate server
+    server-->>browser: Status Code: 302 Found
+    deactivate server
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
     activate server
     server-->>browser: HTML document
     deactivate server
 
+    Note right of browser: Reload the Notes page
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
     activate server
     server-->>browser: the css file
