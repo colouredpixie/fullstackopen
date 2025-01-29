@@ -1,4 +1,3 @@
-import { colorBitGl } from 'pixi.js'
 import { useState } from 'react'
 
 const App = () => {
@@ -25,7 +24,9 @@ const App = () => {
       alert(`${newName} is already added to phonebook`)
     }
     else {
-      setPersons(persons.concat(personObject))
+      const updatedPersons = persons.concat(personObject)
+      setPersons(updatedPersons)
+      setNumbersToShow(updatedPersons)
       setNewName('')
       setNewNumber('')
     }
