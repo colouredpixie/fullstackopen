@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import phonebookService from 'C:/Users/olena.solontsova/Documents/Probation/fullstackopen/part2/phonebook/src/services/phonebook'
 
 const Form = ( { persons, setPersons, setNumbersToShow }) => {
   const [newName, setNewName] = useState('')
@@ -16,18 +17,36 @@ const Form = ( { persons, setPersons, setNumbersToShow }) => {
     const personObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1
+      id: (+persons.at(-1).id + 1).toString()
     }
     const position = persons.map(element => element.name).indexOf(newName);
     if(position !== -1) { 
-      alert(`${newName} is already added to phonebook`)
+      if(confirm(`${newName} is already added to phonebook. Do you want to update the number?`)) {
+        phonebookService      
+        .update(persons.at(position).id, personObject)      
+        .getAll()
+        .then(updatedPersons => {
+          setPersons(updatedPersons)
+          setNumbersToShow(updatedPersons)
+          setNewName('')
+          setNewNumber('')     
+        })
+      }
     }
     else {
-      const updatedPersons = persons.concat(personObject)
-      setPersons(updatedPersons)
-      setNumbersToShow(updatedPersons)
-      setNewName('')
-      setNewNumber('')
+      phonebookService      
+        .create(personObject)      
+        .then(response => {    
+          console.log(response.data)
+          const updatedPersons = persons.concat(personObject)    
+          setPersons(updatedPersons)        
+          setNumbersToShow(updatedPersons)
+          setNewName('')
+          setNewNumber('')      
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 
